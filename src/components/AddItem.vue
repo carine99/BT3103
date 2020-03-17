@@ -6,6 +6,15 @@
         <input type="text" v-model.lazy="item.name" required/>
         <label>Item Category</label>
         <input type="text" v-model.lazy="item.category"/>
+        <label>Time Ordered</label>
+        <input type="time" v-model="item.time"/>
+        <label>Delivery Mode</label>
+        <select v-model="item.delivery">
+          <option disabled value="">Please select one</option>
+          <option>Free Delivery</option>
+          <option>Fast Delivery</option>
+          <option>Self-Collection</option>
+        </select>
         <button v-on:click.prevent="addItem">Add Item</button>
         
     </form>
@@ -22,7 +31,9 @@ export default {
         msg:"Add Item",
         item:{
           name:'',
-          category:''
+          category:'',
+          time: '',
+          delivery: ''
         },
         
         
@@ -31,9 +42,12 @@ export default {
   methods:{
     addItem:  function () {
           //Save item to database
-          database.collection('items').doc().set(this.item);
+          //database.collection('items').doc().set(this.item);
+          database.collection('items').add(this.item);
           this.item.name="";
           this.item.category="";
+          this.item.time="";
+          this.item.delivery="";
           alert("I am in the DB .... :-) Item saved successfully")
           
         }
@@ -62,7 +76,7 @@ label{
     align-content:left;
 
 }
-input[type="text"]{
+input[type="text"], input[type="time"], select{
     display: inline-block;
     padding: 8px;
     width:50%;
